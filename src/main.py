@@ -3076,6 +3076,25 @@ class change_user_settings(JSONEndpoint):
         asm3.configuration.cset(o.dbo, "%s_DefaultStockLocationID" % o.user, defaultlocationid)
         asm3.configuration.cset(o.dbo, "%s_DefaultStockUsageTypeID" % o.user, defaultstockusagetypeid)
 
+        # Accessibility preferences are stored per user. Blank colours inherit
+        # the organisation brand, while valid personal colours override it.
+        primary_colour = post["accessibilityprimarycolour"].strip()
+        secondary_colour = post["accessibilitysecondarycolour"].strip()
+        for colour in (primary_colour, secondary_colour):
+            if colour != "" and not asm3.utils.is_hex_colour(colour):
+                raise asm3.utils.ASMValidationError("Accessibility colors must be six-digit HEX values")
+        font = post["accessibilityfont"]
+        text_size = post["accessibilitytextsize"]
+        if font not in ("", "system", "readable", "serif", "mono"):
+            raise asm3.utils.ASMValidationError("Invalid accessibility font")
+        if text_size not in ("", "100", "112.5", "125", "150"):
+            raise asm3.utils.ASMValidationError("Invalid accessibility text size")
+        asm3.configuration.cset(o.dbo, "%s_AccessibilityFont" % o.user, font)
+        asm3.configuration.cset(o.dbo, "%s_AccessibilityTextSize" % o.user, text_size)
+        asm3.configuration.cset(o.dbo, "%s_AccessibilityPrimaryColour" % o.user, primary_colour.upper())
+        asm3.configuration.cset(o.dbo, "%s_AccessibilitySecondaryColour" % o.user, secondary_colour.upper())
+        asm3.configuration.cset(o.dbo, "%s_AccessibilitySpacing" % o.user, asm3.utils.iif(post.boolean("accessibilityspacing"), "Yes", "No"))
+
         self.reload_config()
 
 class citations(JSONEndpoint):

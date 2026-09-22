@@ -413,7 +413,7 @@ header = {
             homeicon = "custom_logo?smaccount=" + asm.useraccount;
         }
         var h = [
-            '<div id="asm-menu-burger" class="ui-button ui-corner-all ui-widget">☰</div>',
+            '<button id="asm-menu-burger" class="ui-button ui-corner-all ui-widget" type="button" aria-label="' + _("Menu") + '">☰</button>',
             '<div id="asm-topline" class="no-print" style="display: none">',
                 '<div id="asm-topline-logo-div" class="topline-element">',
                     '<a id="asm-topline-logo" href="main" title="' + _("Home") + '"><img src="' + homeicon + '" /></a>',
@@ -436,10 +436,10 @@ header = {
                 '</div>',
                 ' ',
                 '<div id="asm-topline-user-div" class="topline-element">',
-                    '<div id="asm-topline-user" class="asm-menu-icon"><img id="asm-topline-flag" /> <span id="asm-topline-username"></span></div>',
+                    '<div id="asm-topline-user" class="asm-menu-icon" tabindex="0"><img id="asm-topline-flag" alt="" /> <span id="asm-topline-username"></span></div>',
                 '</div>',
                 '<div id="asm-topline-help-div" class="topline-element">',
-                    '<div id="asm-topline-help" class="asm-menu-icon">' + html.icon("callout") + '</div>',
+                    '<div id="asm-topline-help" class="asm-menu-icon" tabindex="0" aria-label="' + _("Help") + '">' + html.icon("callout") + '</div>',
                 '</div>',
             '</div>',
             menubodies,
@@ -772,6 +772,7 @@ header = {
 };
 
 // Render the page header above any content in the body tag
+common.apply_accessibility();
 $("body").prepend(header.render());
 
 // Setup the menu widgets

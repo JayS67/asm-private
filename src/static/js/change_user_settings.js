@@ -89,6 +89,26 @@ $(function() {
                         { post_field: "defaultstockusagetypeid", label: _("Default stock usage type"), type: "select", 
                             options: html.list_to_options(controller.stockusagetypes, "ID", "USAGETYPENAME") },
                     ]},
+                    { id: "accessibility", title: _("Accessibility"), fields: [
+                        { post_field: "accessibilityfont", label: _("Font"), type: "select", options:
+                            '<option value="">' + _("Organization default") + '</option>' +
+                            '<option value="system">' + _("System sans-serif") + '</option>' +
+                            '<option value="readable">' + _("Readable sans-serif") + '</option>' +
+                            '<option value="serif">' + _("Serif") + '</option>' +
+                            '<option value="mono">' + _("Monospace") + '</option>' },
+                        { post_field: "accessibilitytextsize", label: _("Text size"), type: "select", options:
+                            '<option value="">' + _("Organization default") + '</option>' +
+                            '<option value="100">100%</option><option value="112.5">112.5%</option>' +
+                            '<option value="125">125%</option><option value="150">150%</option>' },
+                        { post_field: "accessibilityprimarycolour", label: _("Primary color override (HEX)"), type: "text", maxlength: 7,
+                            xattr: 'pattern="#[0-9A-Fa-f]{6}" placeholder="#176B5B"',
+                            callout: _("Leave blank to use your organization's primary color.") },
+                        { post_field: "accessibilitysecondarycolour", label: _("Secondary color override (HEX)"), type: "text", maxlength: 7,
+                            xattr: 'pattern="#[0-9A-Fa-f]{6}" placeholder="#F2A93B"',
+                            callout: _("Leave blank to use your organization's secondary color.") },
+                        { post_field: "accessibilityspacing", label: _("Increase text spacing"), type: "check" },
+                        { type: "raw", fullrow: true, markup: '<button id="reset-accessibility" type="button">' + _("Reset accessibility settings") + '</button>' }
+                    ]},
                     { id: "quicklinks", title: _("Quicklinks"), fields: [
                         { post_field: "quicklinksid", label: _("Quicklinks"), type: "selectmulti", 
                             options: change_user_settings.quicklink_options()},
@@ -168,6 +188,20 @@ $(function() {
                 });
             });
 
+            $("#accessibilityfont, #accessibilitytextsize, #accessibilityprimarycolour, #accessibilitysecondarycolour, #accessibilityspacing").on("change input", function() {
+                common.apply_accessibility({
+                    font: $("#accessibilityfont").val(),
+                    textsize: $("#accessibilitytextsize").val(),
+                    primary: $("#accessibilityprimarycolour").val(),
+                    secondary: $("#accessibilitysecondarycolour").val(),
+                    spacing: $("#accessibilityspacing").prop("checked")
+                });
+            });
+            $("#reset-accessibility").button().click(function() {
+                $("#accessibilityfont, #accessibilitytextsize, #accessibilityprimarycolour, #accessibilitysecondarycolour").val("");
+                $("#accessibilityspacing").prop("checked", false).change();
+            });
+
         },
 
         sync: function() {
@@ -183,6 +217,11 @@ $(function() {
             $("#email").val(u.EMAILADDRESS);
             $("#locale").select("value", u.LOCALEOVERRIDE);
             $("#theme").select("value", u.THEMEOVERRIDE);
+            $("#accessibilityfont").select("value", config.str(asm.user + "_AccessibilityFont"));
+            $("#accessibilitytextsize").select("value", config.str(asm.user + "_AccessibilityTextSize"));
+            $("#accessibilityprimarycolour").val(config.str(asm.user + "_AccessibilityPrimaryColour"));
+            $("#accessibilitysecondarycolour").val(config.str(asm.user + "_AccessibilitySecondaryColour"));
+            $("#accessibilityspacing").prop("checked", config.bool(asm.user + "_AccessibilitySpacing"));
             $("#enabletotp").val(u.ENABLETOTP);
             $(".enable2fa, .disable2fa").hide();
             $("#button-enable2fa").toggle(u.ENABLETOTP == 0);

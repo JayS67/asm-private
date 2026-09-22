@@ -1059,6 +1059,45 @@ const common = {
         $("body").css("background-color", bg);
     },
 
+    /** Applies organisation branding, followed by the signed-in user's
+     * accessibility overrides. Passing values previews unsaved user settings. */
+    apply_accessibility: function(preview) {
+        let hex = /^#[0-9a-f]{6}$/i,
+            readableText = function(colour) {
+                let value = colour.substring(1),
+                    red = parseInt(value.substring(0, 2), 16),
+                    green = parseInt(value.substring(2, 4), 16),
+                    blue = parseInt(value.substring(4, 6), 16);
+                return ((red * 299 + green * 587 + blue * 114) / 1000) >= 150 ? "#111111" : "#ffffff";
+            },
+            root = document.documentElement,
+            username = (typeof asm !== "undefined" && asm.user) ? asm.user : "",
+            font = preview ? preview.font : config.str(username + "_AccessibilityFont"),
+            textsize = preview ? preview.textsize : config.str(username + "_AccessibilityTextSize"),
+            primary = preview ? preview.primary : config.str(username + "_AccessibilityPrimaryColour"),
+            secondary = preview ? preview.secondary : config.str(username + "_AccessibilitySecondaryColour"),
+            spacing = preview ? preview.spacing : config.bool(username + "_AccessibilitySpacing"),
+            fonts = {
+                "system": '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                "readable": 'Verdana, Arial, sans-serif',
+                "serif": 'Georgia, "Times New Roman", serif',
+                "mono": 'Consolas, "Courier New", monospace'
+            },
+            organisationPrimary = config.str("OrganisationPrimaryColour"),
+            organisationSecondary = config.str("OrganisationSecondaryColour");
+
+        if (!hex.test(organisationPrimary)) { organisationPrimary = "#176B5B"; }
+        if (!hex.test(organisationSecondary)) { organisationSecondary = "#F2A93B"; }
+        primary = hex.test(primary) ? primary : organisationPrimary;
+        root.style.setProperty("--asm-primary", primary);
+        root.style.setProperty("--asm-on-primary", readableText(primary));
+        root.style.setProperty("--asm-secondary", hex.test(secondary) ? secondary : organisationSecondary);
+        root.style.setProperty("--asm-focus", hex.test(secondary) ? secondary : organisationSecondary);
+        root.style.setProperty("--asm-user-font", fonts[font] || 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif');
+        root.style.setProperty("--asm-text-scale-number", ["100", "112.5", "125", "150"].indexOf(textsize) != -1 ? parseFloat(textsize) / 100 : 1);
+        $("body").toggleClass("asm-accessibility-spacing", spacing === true);
+    },
+
     /**
      * Inspects the items in the dom for classes used and automatically
      * creates widgets based on them
@@ -1815,4 +1854,3 @@ Mousetrap.bind([ "ctrl+h", "meta+h" ], function() {
 
 // If an inactivity timeout is configured, starts the timer
 common.start_inactivity_timer();
-

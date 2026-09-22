@@ -817,6 +817,10 @@ def list_overlap(l1: List, l2: List) -> bool:
             return True
     return False
 
+def is_hex_colour(value: str) -> bool:
+    """Returns True for a CSS-safe six-digit hexadecimal colour."""
+    return re.fullmatch(r"#[0-9A-Fa-f]{6}", value or "") is not None
+
 def base64encode(s: bytes) -> str:
     """ Base64 encodes s, returning the result as a string """
     if not is_bytes(s): s = s.encode("utf-8") # Only byte strings can be encoded so convert first
@@ -2338,5 +2342,3 @@ def send_user_email(dbo: Database, sendinguser: str, user: str, subject: str, bo
             send_email(dbo, replyadd, u["EMAILADDRESS"], "", "", subject, body, exceptions=False)
         elif nulltostr(u["ROLES"]).find(user) != -1:
             send_email(dbo, replyadd, u["EMAILADDRESS"], "", "", subject, body, exceptions=False)
-
-
