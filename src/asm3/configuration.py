@@ -357,6 +357,8 @@ DEFAULTS = {
     "OnlineFormSpamURLs": "No",
     "OnlineFormDeleteOnProcess": "No",
     "Organisation": "Organisation",
+    "OrganisationPrimaryColour": "#176B5B",
+    "OrganisationSecondaryColour": "#F2A93B",
     "OrganisationAddress": "Address",
     "OrganisationTelephone": "Telephone",
     "OwnerAddressCheck": "Yes",
@@ -578,6 +580,12 @@ def csave(dbo: Database, username: str, post: PostedData) -> None:
             if k not in cmap or cmap[k] != v:
                 address_changed = True
                 put(k ,v)
+        elif k in ("OrganisationPrimaryColour", "OrganisationSecondaryColour"):
+            # Brand colours become CSS custom properties, so only accept a
+            # complete six-digit hexadecimal colour.
+            if not asm3.utils.is_hex_colour(v):
+                raise asm3.utils.ASMValidationError("%s must be a six-digit HEX colour" % k)
+            put(k, v.upper())
         elif k == "CodingFormat":
             # If there's no valid N, X, O or U tokens in there, it's not valid so reset to
             # the default.

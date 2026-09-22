@@ -7,40 +7,24 @@ const login = {
         let h = [
             '<div id="asm-login-window" class="dialogshadow" style="display: none">',
             '<div id="asm-login-splash"></div>',
-            '<table width="auto" style="margin-left: auto; margin-right: auto; text-align: right; padding: 10px">',
-            '<tr class="asm-account-row hidden">',
-            '<td>',
+            '<div class="asm-login-form">',
+            '<div class="asm-login-field asm-account-row hidden">',
                 '<label for="database">' + (controller.smcom ? _("SM Account") : _("Database")) + '</label>',
-            '</td>',
-            '<td>',
                 '<input class="asm-textbox ui-widget" id="database" name="database" type="text" />',
-            '</td>',
-            '</tr>',
-            '<tr>',
-            '<td>',
+            '</div>',
+            '<div class="asm-login-field">',
                 '<label for="username">' + _("Username") + '</label>',
-            '</td>',
-            '<td>',
                 '<input class="asm-textbox ui-widget" id="username" name="username" type="text" autocomplete="username" />',
-            '</td>',
-            '</tr>',
-            '<tr>',
-            '<td>',
+            '</div>',
+            '<div class="asm-login-field">',
                 '<label for="password">' + _("Password") + '</label>',
-            '</td>',
-            '<td>',
                 '<input class="asm-textbox ui-widget" id="password" name="password" type="password" autocomplete="current-password" />',
-            '</td>',
-            '</tr>',
-            '<tr class="2fa" style="display: none">',
-            '<td>',
+            '</div>',
+            '<div class="asm-login-field 2fa" style="display: none">',
                 '<label for="onetimepass">' + _("2FA Code") + '</label>',
-            '</td>',
-            '<td>',
-                '<input class="asm-textbox ui-widget" id="onetimepass" name="onetimepass" type="text" autocomplete="onetimepass" />',
-            '</td>',
-            '</tr>',
-            '</table>',
+                '<input class="asm-textbox ui-widget" id="onetimepass" name="onetimepass" type="text" inputmode="numeric" autocomplete="one-time-code" />',
+            '</div>',
+            '</div>',
 
             '<div class="centered" style="padding-bottom: 10px">',
                 '<input class="asm-checkbox" id="rememberme" name="rememberme" type="checkbox" />',
@@ -48,7 +32,7 @@ const login = {
             '</div>',
 
             '<div class="centered" style="padding: 5px">',
-                '<button id="loginbutton" class="ui-priority-primary asm-dialog-actionbutton">',
+                '<button id="loginbutton" class="ui-priority-primary asm-dialog-actionbutton" type="button">',
                     '<img id="flag" style="vertical-align: middle;" />',
                     _("Login"),
                     '<img id="loginspinner" src="static/images/wait/rolling_white.svg" style="display: none; vertical-align: middle; height: 16px" />',
@@ -262,6 +246,7 @@ const login = {
     bind: function() {
 
         let self = this;
+        common.apply_accessibility();
 
         // Position the login box to the center of the browser
         $("#asm-login-window").css({

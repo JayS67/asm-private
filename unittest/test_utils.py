@@ -5,6 +5,12 @@ import base
 import asm3.utils
 
 class TestUtils(unittest.TestCase):
+
+    def test_is_hex_colour(self):
+        self.assertTrue(asm3.utils.is_hex_colour("#12aBcF"))
+        self.assertFalse(asm3.utils.is_hex_colour("#123"))
+        self.assertFalse(asm3.utils.is_hex_colour("red"))
+        self.assertFalse(asm3.utils.is_hex_colour("#123456; color: red"))
  
     def test_json_handler(self):
         self.assertNotEqual(asm3.utils.json({ "v": None}).find("null"), -1)
@@ -53,4 +59,3 @@ class TestUtils(unittest.TestCase):
         self.assertNotEqual(plain.find("* item 1"), -1)
         self.assertNotEqual(plain.find("1. item 1"), -1)
         self.assertNotEqual(plain.find("cell 1"), -1)
-

@@ -1,20 +1,56 @@
 
-.desktop body {
-    font-family: sans-serif;
-    font-size: 80%;
+:root {
+    --asm-primary: #176b5b;
+    --asm-primary-dark: #105247;
+    --asm-on-primary: #ffffff;
+    --asm-secondary: #f2a93b;
+    --asm-surface: #ffffff;
+    --asm-surface-muted: #f4f7f6;
+    --asm-border: #d9e2df;
+    --asm-text: #20302d;
+    --asm-text-muted: #64736f;
+    --asm-focus: #f2a93b;
+    --asm-radius: 8px;
+    --asm-shadow: 0 8px 24px rgba(28, 55, 49, 0.12);
+    --asm-user-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --asm-text-scale-number: 1;
 }
 
-.mobile body {
-    font-family: sans-serif;
-    font-size: 90%;
+.desktop body, .mobile body {
+    font-family: var(--asm-user-font);
+    color: var(--asm-text);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.desktop body { --asm-base-font-size: 14px; }
+.mobile body { --asm-base-font-size: 15px; }
+
+.desktop body, .mobile body {
+    font-size: calc(var(--asm-base-font-size) * var(--asm-text-scale-number, 1));
+}
+
+.asm-accessibility-spacing {
+    letter-spacing: .04em;
+    word-spacing: .12em;
+    line-height: 1.7 !important;
 }
 
 a {
+    color: var(--asm-primary);
     text-decoration: none;
 }
 
+input[type="checkbox"], input[type="radio"] { accent-color: var(--asm-primary); }
+
 a:hover {
     text-decoration: underline;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid var(--asm-focus);
+    outline-offset: 2px;
 }
 
 label {
@@ -38,13 +74,13 @@ select:disabled, input:disabled, textarea:disabled {
 
 /** JQuery UI themes can set their own fonts - stop that */
 .ui-widget {
-    font-family: sans-serif;
+    font-family: var(--asm-user-font);
 }
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-    font-family: sans-serif;
+    font-family: var(--asm-user-font);
 }
 
 /** code editors */
@@ -58,7 +94,7 @@ select:disabled, input:disabled, textarea:disabled {
 }
 
 .dialogshadow, .menushadow, .thumbnailshadow, .popupshadow {
-    box-shadow: 3px 3px 5px #888;
+    box-shadow: var(--asm-shadow);
 }
 
 .centered {
@@ -114,12 +150,13 @@ select:disabled, input:disabled, textarea:disabled {
 
 /** LOGIN SCREEN ============= */
 #asm-login-window {
-    padding: 0px;
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
+    overflow: hidden;
+    width: calc(100% - 32px);
+    max-width: 420px;
+    background-color: var(--asm-surface);
     background-repeat: no-repeat;
-    border: 1px solid #555;
+    border: 1px solid var(--asm-border);
+    border-radius: 16px;
 }
 
 #asm-login-window a {
@@ -132,6 +169,34 @@ select:disabled, input:disabled, textarea:disabled {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 50%;
+}
+
+.asm-login-form {
+    display: grid;
+    gap: 14px;
+    padding: 20px 28px 12px;
+}
+
+.asm-login-field {
+    display: grid;
+    gap: 6px;
+}
+
+.asm-login-field label {
+    color: var(--asm-text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.asm-login-field .asm-textbox {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#loginbutton {
+    min-width: 150px;
 }
 
 #asm-login-nav {
@@ -249,9 +314,14 @@ select:disabled, input:disabled, textarea:disabled {
 }
 
 #asm-topline {
+    box-sizing: border-box;
     text-align: left;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 16px;
+    padding: 8px 14px;
+    background: var(--asm-surface);
+    border-bottom: 1px solid var(--asm-border);
+    box-shadow: 0 2px 10px rgba(28, 55, 49, .06);
 }
 
 #asm-topline .topline-element {
@@ -268,7 +338,7 @@ select:disabled, input:disabled, textarea:disabled {
 }
 
 #asm-topline-logo img {
-    height: 32px;
+    height: 36px;
 }
 
 #asm-topline-user {
@@ -278,25 +348,26 @@ select:disabled, input:disabled, textarea:disabled {
 /** MAIN =========================== */
 
 .asm-main-section {
-    border-radius: 8px;
-    border: 1px dotted #999;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    padding: 5px;
+    border-radius: var(--asm-radius);
+    border: 1px solid var(--asm-border);
+    margin: 8px 8px 8px 0;
+    padding: 16px;
+    background: var(--asm-surface);
 }
 
 .asm-main-count {
     display: inline-block;
-    border-radius: 8px;
-    border: 1px solid #999;
-    padding: 10px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    border-radius: var(--asm-radius);
+    border: 1px solid var(--asm-border);
+    padding: 14px 18px;
+    margin: 0 8px 8px 0;
+    background: var(--asm-surface);
+    box-shadow: 0 2px 8px rgba(28, 55, 49, .06);
 }
 
 .asm-main-count-no {
-    font-size: 120%;
+    color: var(--asm-primary);
+    font-size: 150%;
     font-weight: bold;
     text-align: center;
 }
@@ -1143,6 +1214,124 @@ select:disabled, input:disabled, textarea:disabled {
     width: 113px;
 }
 
+/** MODERN UI FOUNDATION
+ * Shared refinements for legacy and newer screens. These intentionally use
+ * existing class names so every workflow benefits without page-specific CSS.
+ */
+.asm-menu-icon {
+    border-radius: 6px;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.asm-menu-icon:hover, .asm-menu-icon:focus-visible {
+    background: var(--asm-surface-muted);
+    text-decoration: none;
+}
+
+.asm-menu-body {
+    padding: 6px;
+    background: var(--asm-surface);
+    border: 1px solid var(--asm-border);
+    border-radius: var(--asm-radius);
+    box-shadow: var(--asm-shadow);
+}
+
+.asm-menu-item a {
+    box-sizing: border-box;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 5px;
+}
+
+.asm-menu-item a:hover, .asm-menu-item a:focus-visible {
+    background: var(--asm-surface-muted);
+    text-decoration: none;
+}
+
+.asm-header {
+    padding: 10px;
+    border-bottom-color: var(--asm-border);
+    font-size: 1.1em;
+}
+
+.asm-textbox, .asm-halftextbox, .asm-doubletextbox, .asm-textarea,
+.asm-textareafixed, .asm-textareafixeddouble, .asm-selectbox,
+.asm-halfselectbox, .asm-doubleselectbox, .asmSelect {
+    box-sizing: border-box;
+    min-height: 34px;
+    padding: 6px 8px;
+    border-color: var(--asm-border);
+    border-radius: 6px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.asm-textarea, .asm-textareafixed, .asm-textareafixeddouble {
+    min-height: 84px;
+}
+
+.asm-textbox:focus, .asm-halftextbox:focus, .asm-doubletextbox:focus,
+.asm-textarea:focus, .asm-selectbox:focus, .asm-halfselectbox:focus,
+.asm-doubleselectbox:focus, .asmSelect:focus {
+    border-color: var(--asm-primary);
+    box-shadow: 0 0 0 3px rgba(23, 107, 91, .14);
+}
+
+.ui-button {
+    min-height: 34px;
+    border-radius: 6px !important;
+    transition: filter .15s ease, transform .15s ease;
+}
+
+.ui-button:hover { filter: brightness(.97); }
+.ui-button:active { transform: translateY(1px); }
+
+.ui-priority-primary {
+    color: var(--asm-on-primary) !important;
+    background: var(--asm-primary) !important;
+    border-color: var(--asm-primary) !important;
+}
+
+.ui-dialog {
+    border-radius: 10px;
+    box-shadow: var(--asm-shadow);
+}
+
+.asm-toolbar, .asm-report-toolbar {
+    padding: 8px;
+    background: var(--asm-surface);
+    border-bottom: 1px solid var(--asm-border);
+}
+
+.asm-search-result {
+    border-bottom-color: var(--asm-border);
+    border-radius: 6px;
+    transition: background-color .15s ease;
+}
+
+.asm-search-result:hover { background: var(--asm-surface-muted); }
+
+.asm-thumbnail, .asm-thumbnail-small {
+    border-color: var(--asm-border);
+    border-radius: var(--asm-radius);
+}
+
+#footer {
+    box-sizing: border-box;
+    margin-top: 24px;
+    padding: 12px;
+    color: var(--asm-text-muted);
+    border-top-color: var(--asm-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
 /** Leaflet pins */
 .asm-incidentpin {
     filter: hue-rotate(0deg); /* Blue */
@@ -1161,6 +1350,10 @@ select:disabled, input:disabled, textarea:disabled {
 
 /** Tweaks for when displaying on portrait mobile devices */
 @media screen and (max-width:480px) {
+
+    #asm-topline { padding: 8px; }
+    #asm-login-splash { height: 160px; }
+    .asm-login-form { padding: 16px 20px 10px; }
 
     /** Stack table cells containing nested tables on mobile so
      *  that they don't overflow and require horizontal scrolling */

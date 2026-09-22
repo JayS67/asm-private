@@ -175,6 +175,12 @@ $(function() {
                 tableform.render_tabs([
                     { id: "tab-shelterdetails", title: _("Shelter Details"), fields: [
                         { id: "organisation", post_field: "Organisation", label: _("Organization"), type: "text", doublesize: true },
+                        { post_field: "OrganisationPrimaryColour", label: _("Primary color (HEX)"), type: "text", maxlength: 7,
+                            xattr: 'pattern="#[0-9A-Fa-f]{6}" placeholder="#176B5B"',
+                            callout: _("Used throughout the application unless a user chooses a personal accessibility color.") },
+                        { post_field: "OrganisationSecondaryColour", label: _("Secondary color (HEX)"), type: "text", maxlength: 7,
+                            xattr: 'pattern="#[0-9A-Fa-f]{6}" placeholder="#F2A93B"',
+                            callout: _("Used for focus indicators and accents. Enter a six-digit value such as #F2A93B.") },
                         { id: "address", post_field: "OrganisationAddress", label: _("Address"), type: "textarea", doublesize: true },
                         { id: "city", post_field: "OrganisationTown", label: _("City"), type: "text" },
                         { id: "state", post_field: "OrganisationCounty", label: _("State"), type: "text", hideif: function() { return config.bool("USStateCodes"); }},
