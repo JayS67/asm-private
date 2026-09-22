@@ -53,6 +53,13 @@ In a development environment, you can start a test instance on port 5000 with:
 make test
 ```
 
+Installing on a VPS
+-------------------
+
+A fresh Debian or Ubuntu VPS can be configured as a standalone, single-database
+ASM server with one command. See [docs/VPS_INSTALL.md](docs/VPS_INSTALL.md) for
+requirements, TLS/DNS setup, generated credentials, and backup guidance.
+
 Logging
 -------
 
@@ -148,5 +155,4 @@ See the cron.py file for more information on mode parameters to run
 specific tasks only.
 
 The Debian package automatically adds the daily tasks to /etc/cron.daily 
-
 
