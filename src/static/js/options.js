@@ -1093,6 +1093,19 @@ $(function() {
                 return encodeURIComponent(mappings);
             };
 
+            // Brand colour changes are previewed immediately. This also makes
+            // it clear that these values affect the application chrome rather
+            // than merely being stored organisation details.
+            $("#OrganisationPrimaryColour, #OrganisationSecondaryColour").on("input change", function() {
+                common.apply_accessibility({
+                    font: config.str(asm.user + "_AccessibilityFont"),
+                    textsize: config.str(asm.user + "_AccessibilityTextSize"),
+                    primary: config.str(asm.user + "_AccessibilityPrimaryColour") || $("#OrganisationPrimaryColour").val(),
+                    secondary: config.str(asm.user + "_AccessibilitySecondaryColour") || $("#OrganisationSecondaryColour").val(),
+                    spacing: config.bool(asm.user + "_AccessibilitySpacing")
+                });
+            });
+
             validate.save = async function(callback) {
                 validate.dirty(false);
                 let formdata = "mode=save&" + $("input, select, textarea, .asm-richtextarea").not(".chooser").toPOST(true);

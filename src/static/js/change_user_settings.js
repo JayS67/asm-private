@@ -138,6 +138,24 @@ $(function() {
         bind: function() {
             $("#signature").asmsignature({ guideline: true, value: controller.user.SIGNATURE });
 
+            $("#accessibilityprimarycolour, #accessibilitysecondarycolour").each(function() {
+                $(this).after('<span class="asm-colour-preview" aria-hidden="true"></span>');
+            });
+
+            const preview_accessibility = function() {
+                let primary = $("#accessibilityprimarycolour").val() || config.str("OrganisationPrimaryColour"),
+                    secondary = $("#accessibilitysecondarycolour").val() || config.str("OrganisationSecondaryColour");
+                $("#accessibilityprimarycolour").next(".asm-colour-preview").css("background-color", primary);
+                $("#accessibilitysecondarycolour").next(".asm-colour-preview").css("background-color", secondary);
+                common.apply_accessibility({
+                    font: $("#accessibilityfont").val(),
+                    textsize: $("#accessibilitytextsize").val(),
+                    primary: $("#accessibilityprimarycolour").val(),
+                    secondary: $("#accessibilitysecondarycolour").val(),
+                    spacing: $("#accessibilityspacing").prop("checked")
+                });
+            };
+
             validate.save = async function(callback) {
                 validate.dirty(false);
                 let formdata = $("input, select").toPOST();
@@ -189,13 +207,7 @@ $(function() {
             });
 
             $("#accessibilityfont, #accessibilitytextsize, #accessibilityprimarycolour, #accessibilitysecondarycolour, #accessibilityspacing").on("change input", function() {
-                common.apply_accessibility({
-                    font: $("#accessibilityfont").val(),
-                    textsize: $("#accessibilitytextsize").val(),
-                    primary: $("#accessibilityprimarycolour").val(),
-                    secondary: $("#accessibilitysecondarycolour").val(),
-                    spacing: $("#accessibilityspacing").prop("checked")
-                });
+                preview_accessibility();
             });
             $("#reset-accessibility").button().click(function() {
                 $("#accessibilityfont, #accessibilitytextsize, #accessibilityprimarycolour, #accessibilitysecondarycolour").val("");
@@ -222,6 +234,7 @@ $(function() {
             $("#accessibilityprimarycolour").val(config.str(asm.user + "_AccessibilityPrimaryColour"));
             $("#accessibilitysecondarycolour").val(config.str(asm.user + "_AccessibilitySecondaryColour"));
             $("#accessibilityspacing").prop("checked", config.bool(asm.user + "_AccessibilitySpacing"));
+            $("#accessibilityprimarycolour, #accessibilitysecondarycolour").trigger("input");
             $("#enabletotp").val(u.ENABLETOTP);
             $(".enable2fa, .disable2fa").hide();
             $("#button-enable2fa").toggle(u.ENABLETOTP == 0);

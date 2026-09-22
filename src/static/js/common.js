@@ -1063,6 +1063,15 @@ const common = {
      * accessibility overrides. Passing values previews unsaved user settings. */
     apply_accessibility: function(preview) {
         let hex = /^#[0-9a-f]{6}$/i,
+            mix = function(colour, target, amount) {
+                let source = colour.substring(1), output = "#", i,
+                    targetValue = target == "white" ? 255 : 0;
+                for (i = 0; i < 3; i += 1) {
+                    let component = Math.round(parseInt(source.substring(i * 2, i * 2 + 2), 16) * (1 - amount) + targetValue * amount).toString(16);
+                    output += component.length == 1 ? "0" + component : component;
+                }
+                return output;
+            },
             readableText = function(colour) {
                 let value = colour.substring(1),
                     red = parseInt(value.substring(0, 2), 16),
@@ -1090,12 +1099,17 @@ const common = {
         if (!hex.test(organisationSecondary)) { organisationSecondary = "#F2A93B"; }
         primary = hex.test(primary) ? primary : organisationPrimary;
         root.style.setProperty("--asm-primary", primary);
+        root.style.setProperty("--asm-primary-dark", mix(primary, "black", 0.24));
+        root.style.setProperty("--asm-primary-soft", mix(primary, "white", 0.88));
         root.style.setProperty("--asm-on-primary", readableText(primary));
-        root.style.setProperty("--asm-secondary", hex.test(secondary) ? secondary : organisationSecondary);
-        root.style.setProperty("--asm-focus", hex.test(secondary) ? secondary : organisationSecondary);
+        secondary = hex.test(secondary) ? secondary : organisationSecondary;
+        root.style.setProperty("--asm-secondary", secondary);
+        root.style.setProperty("--asm-secondary-soft", mix(secondary, "white", 0.82));
+        root.style.setProperty("--asm-focus", secondary);
         root.style.setProperty("--asm-user-font", fonts[font] || 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif');
         root.style.setProperty("--asm-text-scale-number", ["100", "112.5", "125", "150"].indexOf(textsize) != -1 ? parseFloat(textsize) / 100 : 1);
         $("body").toggleClass("asm-accessibility-spacing", spacing === true);
+        $("meta[name='theme-color']").attr("content", primary);
     },
 
     /**
